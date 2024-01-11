@@ -40,7 +40,7 @@ func ConfigInit() {
 	if err := viper.Unmarshal(conf.Conf); err != nil {
 		fmt.Printf("viper.Unmarshal failed,err:%v\n", err)
 	}
-	viper.WatchConfig() // （热加载时读取配置）监控配置文件
+	viper.WatchConfig()                            // （热加载时读取配置）监控配置文件
 	viper.OnConfigChange(func(in fsnotify.Event) { // 配置文件修改时触发回调
 		if err := viper.Unmarshal(conf.Conf); err != nil {
 			fmt.Printf("viper.Unmarshal failed,err:%v\n", err)
@@ -68,9 +68,6 @@ func MysqlInit(config *conf.MysqlConfig) {
 	db.AutoMigrate(
 		// 表
 		domain.File{},
-		domain.Message{},
-		domain.Relationship{},
-		domain.Group{},
 	)
 
 	global.DB = db
@@ -88,6 +85,7 @@ func RedisInit(config *conf.RedisConfig) {
 	_, err := rdb.Ping().Result()
 	if err != nil {
 		fmt.Println(err)
+		return
 	}
 
 	global.Rdb = rdb
