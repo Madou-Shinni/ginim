@@ -63,11 +63,15 @@ func (c *Client) Login(userId uint) {
 func (c *Client) processed(message domain.Message) {
 	switch message.Type {
 	case constants.MessageTypePrivate:
-		marshal, _ := json.Marshal(message)
 		if clientManager.clientMap[message.To] == nil {
 			fmt.Printf("用户不在线: %d\n", message.To)
 			return
 		}
+		if c.userId == message.From {
+			// 自己发送的消息
+			message.Sender = true
+		}
+		marshal, _ := json.Marshal(message)
 		clientManager.clientMap[message.To].Send(marshal)
 	}
 }
