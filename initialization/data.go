@@ -94,5 +94,8 @@ func RedisInit(config *conf.RedisConfig) {
 
 // 释放资源
 func Close() {
+	if global.Rdb == nil {
+		return
+	}
 	global.Rdb.Close()
 }
