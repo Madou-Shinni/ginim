@@ -9,6 +9,10 @@ import (
 )
 
 func Consumer() {
+	if global.Rdb == nil {
+		logger.Error("redis连接失败")
+		return
+	}
 	// 从消息队列中获取消息
 	rdb := global.Rdb
 	subscribe := message_queue.RedisMessagePSubscribeChannels(rdb, string(constants.ChannelMessage))
