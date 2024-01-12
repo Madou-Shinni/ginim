@@ -3,7 +3,7 @@ app:
   env: dev
   # 分布式节点(用于生成分布式id应保证各个机器节点不一致)
   machineID: 1
-  server-port: 8080
+  server-port: 9999
 # 数据库
 mysql:
   host: "127.0.0.1"

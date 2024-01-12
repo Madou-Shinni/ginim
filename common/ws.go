@@ -10,6 +10,12 @@ import (
 
 var (
 	clientManager = NewClientManager()
+	upgrader      = websocket.Upgrader{
+		CheckOrigin: func(r *http.Request) bool {
+			fmt.Println("升级协议", "ua:", r.Header["User-Agent"], "referer:", r.Header["Referer"])
+			return true
+		},
+	}
 )
 
 func init() {
@@ -21,11 +27,7 @@ func init() {
 func WsHandler(c *gin.Context) {
 
 	// 升级协议
-	conn, err := (&websocket.Upgrader{CheckOrigin: func(r *http.Request) bool {
-		fmt.Println("升级协议", "ua:", r.Header["User-Agent"], "referer:", r.Header["Referer"])
-
-		return true
-	}}).Upgrade(c.Writer, c.Request, nil)
+	conn, err := upgrader.Upgrade(c.Writer, c.Request, nil)
 	if err != nil {
 		http.NotFound(c.Writer, c.Request)
 

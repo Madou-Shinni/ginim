@@ -67,11 +67,8 @@ func (c *Client) processed(message domain.Message) {
 			fmt.Printf("用户不在线: %d\n", message.To)
 			return
 		}
-		if c.userId == message.From {
-			// 自己发送的消息
-			message.Sender = true
-		}
 		marshal, _ := json.Marshal(message)
+		clientManager.clientMap[message.From].Send(marshal)
 		clientManager.clientMap[message.To].Send(marshal)
 	}
 }

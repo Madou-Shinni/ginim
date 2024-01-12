@@ -13,7 +13,6 @@ type Message struct {
 	Type      constants.MessageType `json:"type,omitempty"`      // 消息类型
 	MediaType constants.MediaType   `json:"mediaType,omitempty"` // 媒体类型
 	Content   string                `json:"content,omitempty"`   // 内容
-	Sender    bool                  `json:"sender"`              // 是否是自己发送
 }
 
 type PageMessageSearch struct {
