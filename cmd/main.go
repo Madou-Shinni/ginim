@@ -4,6 +4,7 @@ package main
 import (
 	"fmt"
 	"github.com/Madou-Shinni/gin-quickstart/initialization"
+	"github.com/Madou-Shinni/gin-quickstart/jobs"
 	"github.com/Madou-Shinni/go-logger"
 	"os"
 	"os/signal"
@@ -28,6 +29,9 @@ import (
 func main() {
 	// 启动服务(使用goroutine解决服务启动时程序阻塞问题)
 	go initialization.RunServer()
+
+	// 任务
+	jobs.Consumer()
 
 	// 监听信号
 	signals := make(chan os.Signal, 1)
