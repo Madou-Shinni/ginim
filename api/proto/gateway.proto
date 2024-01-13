@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+package proto;
+
+option go_package = "api/proto;proto";
+
+import "api/proto/common.proto";
+
+message PushMsgReq {
+  Message msg = 1;
+}
+
+service Gateway {
+  // 发送消息
+  rpc PushMsg(PushMsgReq) returns (Empty);
+}
