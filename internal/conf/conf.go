@@ -7,6 +7,7 @@ type ProfileInfo struct {
 	*MysqlConfig `mapstructure:"mysql"`
 	*RedisConfig `mapstructure:"redis"`
 	*JwtConfig   `mapstructure:"jwt"`
+	Github       `mapstructure:"github"`
 }
 
 // 系统配置
@@ -38,4 +39,11 @@ type JwtConfig struct {
 	RefreshExpire int64  `mapstructure:"refresh-expire"`
 	Issuer        string `mapstructure:"issuer"`
 	Secret        string `mapstructure:"secret"`
+}
+
+// Github github oauth配置
+type Github struct {
+	ClientId     string `mapstructure:"client-id"`
+	ClientSecret string `mapstructure:"client-secret"`
+	RedirectUrl  string `mapstructure:"redirect-url"`
 }

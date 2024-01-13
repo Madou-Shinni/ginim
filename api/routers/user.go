@@ -16,5 +16,6 @@ func UserRouterRegister(r *gin.Engine) {
 		userGroup.GET("", userHandle.Find)
 		userGroup.GET("/list", userHandle.List)
 		userGroup.PUT("", userHandle.Update)
+		userGroup.GET("oauth2/github/callback", userHandle.LoginByGithub) // github第三方登录
 	}
 }

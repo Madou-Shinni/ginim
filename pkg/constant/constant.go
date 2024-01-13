@@ -22,6 +22,7 @@ const (
 	CODE_DELETE_FAILED                           // 删除失败
 	CODE_UPDATE_FAILED                           // 修改失败
 	CODE_FIND_FAILED                             // 查询失败
+	CodeBusinessError                            // 业务错误
 )
 
 var codeMsgMap = map[RspCode]string{
@@ -33,6 +34,7 @@ var codeMsgMap = map[RspCode]string{
 	CODE_DELETE_FAILED:     "删除失败！",
 	CODE_UPDATE_FAILED:     "修改失败！",
 	CODE_FIND_FAILED:       "查询失败",
+	CodeBusinessError:      "业务错误",
 }
 
 func (c RspCode) Msg() string {

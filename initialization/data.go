@@ -68,6 +68,7 @@ func MysqlInit(config *conf.MysqlConfig) {
 	db.AutoMigrate(
 		// 表
 		domain.File{},
+		domain.User{},
 	)
 
 	global.DB = db

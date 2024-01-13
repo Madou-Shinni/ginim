@@ -158,3 +158,22 @@ func (cl *UserHandle) List(c *gin.Context) {
 
 	response.Success(c, res)
 }
+
+func (cl *UserHandle) LoginByGithub(c *gin.Context) {
+	value := c.Query("code")
+	if value == "" {
+		response.Error(c, constant.CODE_INVALID_PARAMETER, constant.CODE_INVALID_PARAMETER.Msg())
+		return
+	}
+
+	info, token, err := cl.s.LoginByGithub(value)
+	if err != nil {
+		response.Error(c, constant.CodeBusinessError, err.Error())
+		return
+	}
+
+	response.Success(c, gin.H{
+		"token": token,
+		"user":  info,
+	})
+}

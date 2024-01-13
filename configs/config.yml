@@ -27,3 +27,8 @@ jwt:
   issuer: sni
   # 密钥
   secret: yoursecret
+# github oauth2
+github:
+  client-id: yourclientid
+  client-secret: yourclientsecret
+  redirect-url: http://localhost:8080/oauth2/github/callback
