@@ -22,3 +22,4 @@
 
 configs/*_dev.yml
 configs/*_dev.yaml
+configs/*-dev.yaml
