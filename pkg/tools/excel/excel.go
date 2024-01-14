@@ -30,7 +30,7 @@ type Setting struct {
 }
 
 // 解析data中带ex的tag的字段，返回解析后的setting列表
-// @param interface{}结构体指针
+// param interface{}结构体指针
 func ParseExcelTag(data interface{}) []Setting {
 	var (
 		setting     Setting
