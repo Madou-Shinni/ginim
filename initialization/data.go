@@ -64,11 +64,19 @@ func MysqlInit(config *conf.MysqlConfig) {
 		return
 	}
 
+	s, _ := db.DB()
+	s.SetMaxIdleConns(config.MaxIdleConns)
+	s.SetMaxOpenConns(config.MaxOpenConns)
+
 	// 自动迁移
 	db.AutoMigrate(
 		// 表
 		domain.File{},
 		domain.User{},
+		domain.Group{},
+		domain.Relationship{},
+		domain.Conversation{},
+		domain.Message{},
 	)
 
 	global.DB = db

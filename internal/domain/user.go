@@ -12,7 +12,7 @@ type User struct {
 	CreatedAt *model.LocalTime `json:"createdAt" form:"createdAt" swaggerignore:"true"` // 创建时间
 	UpdatedAt *model.LocalTime `json:"updatedAt" form:"updatedAt" swaggerignore:"true"` // 修改时间
 	DeletedAt gorm.DeletedAt   `gorm:"index" json:"deletedAt" form:"deletedAt" swaggerignore:"true"`
-	Name      string           `json:"name" gorm:"uniqueIndex" form:"name" binding:"required"`
+	Name      string           `json:"name" gorm:"name;type:varchar(255)" form:"name"`
 	Avatar    string           `json:"avatar" gorm:"column:avatar" form:"avatar"`
 	GithubId  uint             `json:"githubId" gorm:"github_id"` // github用户id
 }

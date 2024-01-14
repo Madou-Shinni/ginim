@@ -19,11 +19,13 @@ type App struct {
 
 // mysql配置
 type MysqlConfig struct {
-	Host     string `mapstructure:"host"`
-	Port     int    `mapstructure:"port"`
-	User     string `mapstructure:"user"`
-	Password string `mapstructure:"password"`
-	DBName   string `mapstructure:"dbname"`
+	Host         string `mapstructure:"host"`
+	Port         int    `mapstructure:"port"`
+	User         string `mapstructure:"user"`
+	Password     string `mapstructure:"password"`
+	DBName       string `mapstructure:"dbname"`
+	MaxIdleConns int    `mapstructure:"max-idle-conns"`
+	MaxOpenConns int    `mapstructure:"max-open-conns"`
 }
 
 // redis配置
