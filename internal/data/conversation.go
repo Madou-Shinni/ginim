@@ -3,6 +3,7 @@ package data
 import (
 	"errors"
 	"fmt"
+	"github.com/Madou-Shinni/gin-quickstart/constants"
 	"github.com/Madou-Shinni/gin-quickstart/internal/domain"
 	"github.com/Madou-Shinni/gin-quickstart/pkg/global"
 	"github.com/Madou-Shinni/gin-quickstart/pkg/request"
@@ -51,15 +52,33 @@ func (s *ConversationRepo) List(page domain.PageConversationSearch) ([]domain.Co
 	var (
 		conversationList []domain.Conversation
 		err              error
+		groupIds         []uint
 	)
 	// db
-	db := global.DB.Model(&domain.Conversation{})
+	db := global.DB
 	// page
 	offset, limit := pagelimit.OffsetLimit(page.PageNum, page.PageSize)
 
+	if page.OwnerId != 0 {
+		// 查询所在的群ids
+		err = db.Model(&domain.Relationship{}).
+			Where("target = ?", page.OwnerId).
+			Where("type = ?", constants.RelationshipTypeGroup).
+			Pluck("target", &groupIds).Error
+		if err != nil {
+			return nil, err
+		}
+		// 查询私人会话和群会话
+		db = db.Where("owner_id = ?", page.OwnerId). // 私人会话
+								Or( // 或者 群会话
+				db.Where("type = ?", constants.ConversationTypeGroup).
+					Where("owner_id in ?", groupIds),
+			)
+	}
+
 	// TODO：条件过滤
 
-	err = db.Offset(offset).Limit(limit).Find(&conversationList).Error
+	err = db.Offset(offset).Limit(limit).Order("updated_at DESC").Preload("LastMessage").Find(&conversationList).Error
 
 	return conversationList, err
 }
