@@ -45,7 +45,7 @@ func (m *Message) BeforeCreate(tx *gorm.DB) (err error) {
 	}
 
 	// 设置会话id
-	m.ConversationId = conversation.ID
+	m.ConversationId = conversation.ConversationID
 
 	return
 }
