@@ -64,7 +64,7 @@ func (s *ConversationRepo) List(page domain.PageConversationSearch) ([]domain.Co
 	return conversationList, err
 }
 
-func (s *ConversationRepo) Count() (int64, error) {
+func (s *ConversationRepo) Count(page domain.PageConversationSearch) (int64, error) {
 	var (
 		count int64
 		err   error

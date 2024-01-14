@@ -16,7 +16,7 @@ type ConversationRepo interface {
 	Update(conversation map[string]interface{}) error
 	Find(conversation domain.Conversation) (domain.Conversation, error)
 	List(page domain.PageConversationSearch) ([]domain.Conversation, error)
-	Count() (int64, error)
+	Count(page domain.PageConversationSearch) (int64, error)
 	DeleteByIds(ids request.Ids) error
 }
 
@@ -79,7 +79,7 @@ func (s *ConversationService) List(page domain.PageConversationSearch) (response
 		return pageRes, err
 	}
 
-	count, err := s.repo.Count()
+	count, err := s.repo.Count(page)
 	if err != nil {
 		logger.Error("s.repo.Count()", zap.Error(err))
 		return pageRes, err

@@ -16,7 +16,7 @@ type {{.Module}}Repo interface {
 	Update({{.ModuleLower}} map[string]interface{}) error
 	Find({{.ModuleLower}} domain.{{.Module}}) (domain.{{.Module}}, error)
 	List(page domain.Page{{.Module}}Search) ([]domain.{{.Module}}, error)
-	Count() (int64, error)
+	Count(page domain.Page{{.Module}}Search) (int64, error)
 	DeleteByIds(ids request.Ids) error
 }
 
