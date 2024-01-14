@@ -32,6 +32,7 @@ func RunServer() {
 	routers.FileRouterRegister(r)
 	routers.WSRouterRegister(r)
 	routers.UserRouterRegister(r)
+	routers.GroupRouterRegister(r)
 
 	fmt.Printf("[GIN-QuickStart] 接口文档地址：http://localhost:%v/swagger/index.html\n", conf.Conf.ServerPort)
 
