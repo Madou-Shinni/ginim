@@ -6,7 +6,7 @@ import (
 )
 
 // 注册路由
-func ConversationRouterRegister(r *gin.Engine) {
+func ConversationRouterRegister(r *gin.RouterGroup) {
 	conversationGroup := r.Group("conversation")
 	conversationHandle := handle.NewConversationHandle()
 	{

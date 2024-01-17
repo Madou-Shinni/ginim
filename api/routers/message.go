@@ -6,7 +6,7 @@ import (
 )
 
 // 注册路由
-func MessageRouterRegister(r *gin.Engine) {
+func MessageRouterRegister(r *gin.RouterGroup) {
 	messageGroup := r.Group("message")
 	messageHandle := handle.NewMessageHandle()
 	{

@@ -69,16 +69,59 @@ func (s *ConversationRepo) List(page domain.PageConversationSearch) ([]domain.Co
 			return nil, err
 		}
 		// 查询私人会话和群会话
-		db = db.Where("owner_id = ?", page.OwnerId). // 私人会话
-								Or( // 或者 群会话
+		db = db.Where("owner_id = ?", page.OwnerId) // 私人会话
+		if len(groupIds) > 0 {
+			db = db.Or( // 或者 群会话
 				db.Where("type = ?", constants.ConversationTypeGroup).
 					Where("owner_id in ?", groupIds),
 			)
+		}
 	}
 
 	// TODO：条件过滤
 
-	err = db.Offset(offset).Limit(limit).Order("updated_at DESC").Preload("LastMessage").Find(&conversationList).Error
+	err = db.Debug().Offset(offset).Limit(limit).Order("updated_at DESC").Preload("LastMessage").Find(&conversationList).Error
+
+	// 查询会话名称，将用户name或者群name做会话名称
+	var userIds []uint
+	for _, v := range conversationList {
+		if v.Type == constants.ConversationTypePrivate {
+			userIds = append(userIds, v.TargetId)
+		}
+	}
+
+	db = global.DB
+	// 查询用户和群
+	users := make([]domain.User, 0, len(userIds))
+	groups := make([]domain.Group, 0, len(groupIds))
+	err = db.Model(&domain.User{}).Select("id", "name").Where("id in ?", userIds).Find(&users).Error
+	if err != nil {
+		return nil, err
+	}
+	err = db.Model(&domain.Group{}).Select("id", "name").Where("id in ?", groupIds).Find(&groups).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// 转换为map
+	userMap := make(map[uint]domain.User, len(users))
+	groupMap := make(map[uint]domain.Group, len(users))
+	for _, user := range users {
+		userMap[user.ID] = user
+	}
+	for _, group := range groups {
+		groupMap[group.ID] = group
+	}
+
+	// 设置会话名称
+	for i, v := range conversationList {
+		if v.Type == constants.ConversationTypePrivate {
+			conversationList[i].Name = userMap[v.TargetId].Name
+		}
+		if v.Type == constants.ConversationTypeGroup {
+			conversationList[i].Name = groupMap[v.OwnerId].Name
+		}
+	}
 
 	return conversationList, err
 }

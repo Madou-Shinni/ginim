@@ -15,6 +15,8 @@ type Conversation struct {
 	Type           constants.ConversationType `json:"type" gorm:"column:type;type:int"`     // 会话类型
 	LastMessageId  uint                       `json:"lastMessageId" gorm:"last_message_id"` // 最后一条消息id
 	LastMessage    Message                    `json:"lastMessage" gorm:"foreignKey:ID;references:LastMessageId"`
+	UnreadCount    int                        `json:"unreadCount" gorm:"-"` // 未读消息数
+	Name           string                     `json:"name" gorm:"-"`        // 会话名称
 }
 
 type PageConversationSearch struct {

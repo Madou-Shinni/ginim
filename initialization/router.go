@@ -33,13 +33,13 @@ func RunServer() {
 	routers.WSRouterRegister(r)
 	routers.UserRouterRegister(r)
 	routers.GroupRouterRegister(r)
-	routers.ConversationRouterRegister(r)
-	routers.MessageRouterRegister(r)
 
 	authRouter := r.Group("")
 	authRouter.Use(middleware.JwtAuth())
 	{
 		routers.RelationshipRouterRegister(authRouter)
+		routers.MessageRouterRegister(authRouter)
+		routers.ConversationRouterRegister(authRouter)
 	}
 
 	fmt.Printf("[GIN-QuickStart] 接口文档地址：http://localhost:%v/swagger/index.html\n", conf.Conf.ServerPort)
