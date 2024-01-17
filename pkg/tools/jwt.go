@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"errors"
 	"github.com/golang-jwt/jwt/v4"
 	"strconv"
 )
@@ -8,6 +9,10 @@ import (
 const (
 	UserIdKey = "userId"
 	ExpKey    = "exp" // 过期时间key
+)
+
+var (
+	ErrorUserInfo = errors.New("用户异常，请重新登录")
 )
 
 // GenToken 生成token map中key=exp过期时间
@@ -22,21 +27,21 @@ func GenToken(mapClaims jwt.MapClaims, signed string) (token string, err error) 
 }
 
 // GetUserIdFromJwt 解析token
-func GetUserIdFromJwt(tokenStr string, signed string) (uint, bool) {
+func GetUserIdFromJwt(tokenStr string, signed string) (uint, error) {
 	token, err := jwt.ParseWithClaims(tokenStr, jwt.MapClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(signed), nil
 	})
 	if err != nil {
-		return 0, false
+		return 0, err
 	}
 	if claims, ok := token.Claims.(jwt.MapClaims); !ok && !token.Valid {
-		return 0, false
+		return 0, jwt.ErrTokenInvalidClaims
 	} else {
 		userIdStr := claims[UserIdKey].(string)
 		userId, err := strconv.ParseUint(userIdStr, 10, 64)
 		if err != nil {
-			return 0, false
+			return 0, ErrorUserInfo
 		}
-		return uint(userId), true
+		return uint(userId), nil
 	}
 }

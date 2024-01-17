@@ -21,9 +21,9 @@ func JwtAuth() gin.HandlerFunc {
 			return
 		}
 		// 解析token
-		userId, ok := tools.GetUserIdFromJwt(token, conf.Conf.JwtConfig.Secret)
-		if !ok {
-			response.Error(c, constant.CODE_NO_PERMISSIONS, constant.CODE_NO_PERMISSIONS.Msg())
+		userId, err := tools.GetUserIdFromJwt(token, conf.Conf.JwtConfig.Secret)
+		if err != nil {
+			response.Error(c, constant.CODE_NO_PERMISSIONS, err.Error())
 			c.Abort()
 			return
 		}
