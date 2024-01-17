@@ -6,7 +6,7 @@ import (
 )
 
 // 注册路由
-func RelationshipRouterRegister(r *gin.Engine) {
+func RelationshipRouterRegister(r *gin.RouterGroup) {
 	relationshipGroup := r.Group("relationship")
 	relationshipHandle := handle.NewRelationshipHandle()
 	{

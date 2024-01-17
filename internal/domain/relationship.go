@@ -14,6 +14,7 @@ type Relationship struct {
 	Owner  uint                       `json:"owner,string,omitempty"`                     // 拥有者
 	Target uint                       `json:"target,string,omitempty"`                    // 目标
 	Type   constants.RelationshipType `json:"type,omitempty" gorm:"column:type;type:int"` // 关系类型
+	Friend *User                      `json:"friend,omitempty" gorm:"foreignKey:Target"`  // 好友
 }
 
 type PageRelationshipSearch struct {

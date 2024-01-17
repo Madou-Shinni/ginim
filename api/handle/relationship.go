@@ -1,6 +1,7 @@
 package handle
 
 import (
+	"github.com/Madou-Shinni/gin-quickstart/common"
 	"github.com/Madou-Shinni/gin-quickstart/internal/domain"
 	"github.com/Madou-Shinni/gin-quickstart/internal/service"
 	"github.com/Madou-Shinni/gin-quickstart/pkg/constant"
@@ -148,6 +149,14 @@ func (cl *RelationshipHandle) List(c *gin.Context) {
 		response.Error(c, constant.CODE_INVALID_PARAMETER, constant.CODE_INVALID_PARAMETER.Msg())
 		return
 	}
+
+	userId, err := common.GetUserIdFromCtx(c)
+	if err != nil {
+		response.Error(c, constant.CODE_INVALID_PARAMETER, err.Error())
+		return
+	}
+
+	relationship.Owner = userId
 
 	res, err := cl.s.List(relationship)
 

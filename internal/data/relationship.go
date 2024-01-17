@@ -1,8 +1,8 @@
 package data
 
 import (
-    "errors"
-    "fmt"
+	"errors"
+	"fmt"
 	"github.com/Madou-Shinni/gin-quickstart/internal/domain"
 	"github.com/Madou-Shinni/gin-quickstart/pkg/global"
 	"github.com/Madou-Shinni/gin-quickstart/pkg/request"
@@ -25,14 +25,14 @@ func (s *RelationshipRepo) DeleteByIds(ids request.Ids) error {
 }
 
 func (s *RelationshipRepo) Update(relationship map[string]interface{}) error {
-    var columns []string
+	var columns []string
 	for key := range relationship {
 		columns = append(columns, key)
 	}
-	if _,ok := relationship["id"];!ok {
-        // 不存在id
-        return errors.New(fmt.Sprintf("missing %s.id","relationship"))
-    }
+	if _, ok := relationship["id"]; !ok {
+		// 不存在id
+		return errors.New(fmt.Sprintf("missing %s.id", "relationship"))
+	}
 	model := domain.Relationship{}
 	model.ID = uint(relationship["id"].(float64))
 	return global.DB.Model(&model).Select(columns).Updates(&relationship).Error
@@ -50,27 +50,37 @@ func (s *RelationshipRepo) Find(relationship domain.Relationship) (domain.Relati
 func (s *RelationshipRepo) List(page domain.PageRelationshipSearch) ([]domain.Relationship, error) {
 	var (
 		relationshipList []domain.Relationship
-		err      error
+		err              error
 	)
 	// db
 	db := global.DB.Model(&domain.Relationship{})
 	// page
 	offset, limit := pagelimit.OffsetLimit(page.PageNum, page.PageSize)
 
+	if page.Owner != 0 {
+		db = db.Where("owner = ?", page.Owner)
+	}
+
 	// TODO：条件过滤
 
-	err = db.Offset(offset).Limit(limit).Find(&relationshipList).Error
+	err = db.Offset(offset).Limit(limit).Preload("Friend").Find(&relationshipList).Error
 
 	return relationshipList, err
 }
 
-func (s *RelationshipRepo) Count() (int64, error) {
+func (s *RelationshipRepo) Count(page domain.PageRelationshipSearch) (int64, error) {
 	var (
 		count int64
 		err   error
 	)
 
-	err = global.DB.Model(&domain.Relationship{}).Count(&count).Error
+	db := global.DB.Model(&domain.Relationship{})
+
+	if page.Owner != 0 {
+		db = db.Where("owner = ?", page.Owner)
+	}
+
+	err = db.Model(&domain.Relationship{}).Count(&count).Error
 
 	return count, err
 }

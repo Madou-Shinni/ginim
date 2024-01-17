@@ -142,7 +142,7 @@ func (s *UserService) LoginByGithub(code string) (userInfo *domain.User, token s
 	// 生成token
 	token, err = tools.GenToken(jwt.MapClaims{
 		tools.UserIdKey: strconv.FormatUint(uint64(userInfo.ID), 10),
-		tools.ExpKey:    time.Date(0, 0, 30, 0, 0, 0, 0, time.Local).Unix(),
+		tools.ExpKey:    time.Now().AddDate(0, 0, 30).Unix(),
 	}, conf.Conf.JwtConfig.Secret)
 	if err != nil {
 		logger.Error("tools.GenToken(jwt.MapClaims{})", zap.Error(err))

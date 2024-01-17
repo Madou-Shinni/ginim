@@ -16,7 +16,7 @@ type RelationshipRepo interface {
 	Update(relationship map[string]interface{}) error
 	Find(relationship domain.Relationship) (domain.Relationship, error)
 	List(page domain.PageRelationshipSearch) ([]domain.Relationship, error)
-	Count() (int64, error)
+	Count(page domain.PageRelationshipSearch) (int64, error)
 	DeleteByIds(ids request.Ids) error
 }
 
@@ -79,7 +79,7 @@ func (s *RelationshipService) List(page domain.PageRelationshipSearch) (response
 		return pageRes, err
 	}
 
-	count, err := s.repo.Count()
+	count, err := s.repo.Count(page)
 	if err != nil {
 		logger.Error("s.repo.Count()", zap.Error(err))
 		return pageRes, err
