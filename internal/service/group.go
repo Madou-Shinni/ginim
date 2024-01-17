@@ -85,7 +85,7 @@ func (s *GroupService) List(page domain.PageGroupSearch) (response.PageResponse,
 		return pageRes, err
 	}
 
-	pageRes.Data = data
+	pageRes.List = data
 	pageRes.Total = count
 
 	return pageRes, nil

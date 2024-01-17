@@ -96,7 +96,7 @@ func (s *UserService) List(page domain.PageUserSearch) (response.PageResponse, e
 		return pageRes, err
 	}
 
-	pageRes.Data = data
+	pageRes.List = data
 	pageRes.Total = count
 
 	return pageRes, nil

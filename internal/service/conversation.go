@@ -85,7 +85,7 @@ func (s *ConversationService) List(page domain.PageConversationSearch) (response
 		return pageRes, err
 	}
 
-	pageRes.Data = data
+	pageRes.List = data
 	pageRes.Total = count
 
 	return pageRes, nil

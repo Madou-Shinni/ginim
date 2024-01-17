@@ -85,7 +85,7 @@ func (s *RelationshipService) List(page domain.PageRelationshipSearch) (response
 		return pageRes, err
 	}
 
-	pageRes.Data = data
+	pageRes.List = data
 	pageRes.Total = count
 
 	return pageRes, nil

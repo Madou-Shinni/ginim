@@ -85,7 +85,7 @@ func (s *MessageService) List(page domain.PageMessageSearch) (response.PageRespo
 		return pageRes, err
 	}
 
-	pageRes.Data = data
+	pageRes.List = data
 	pageRes.Total = count
 
 	return pageRes, nil
